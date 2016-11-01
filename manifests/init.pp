@@ -46,9 +46,9 @@ class role_postgresql {
     password => postgresql_password('mydatabaseuser', 'mypassword'),
   }
 
-  #postgresql::server::role { 'marmot':
-  #  password_hash => postgresql_password('marmot', 'mypasswd'),
-  #}
+  postgresql::server::role { 'marmot':
+    password_hash => postgresql_password('marmot', 'mypasswd'),
+  }
 
   postgresql::server::database_grant { 'mydatabasename':
     privilege => 'ALL',
