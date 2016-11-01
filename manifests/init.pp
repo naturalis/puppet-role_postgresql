@@ -37,7 +37,9 @@
 #
 class role_postgresql {
 
-  class { 'postgresql::server': }
+  class { 'postgresql::server':
+    listen_addresses => '*',
+  }
 
   postgresql::server::role { 'marmot':
     password_hash => postgresql_password('marmot', 'mypasswd'),
