@@ -40,21 +40,19 @@ class role_postgresql {
   class { 'postgresql::server':
     listen_addresses => '*',
   }
-
-  postgresql::server::role { 'marmot':
-    password_hash => postgresql_password('marmot', 'mypasswd'),
+ 
+  postgresql::server::db { 'mydatabasename':
+    user     => 'mydatabaseuser',
+    password => postgresql_password('mydatabaseuser', 'mypassword'),
   }
 
-  postgresql::server::database_grant { 'test1':
-    privilege => 'ALL',
-    db        => 'test1',
-    role      => 'marmot',
-  }
+  #postgresql::server::role { 'marmot':
+  #  password_hash => postgresql_password('marmot', 'mypasswd'),
+  #}
 
-  postgresql::server::table_grant { 'my_table of test2':
+  postgresql::server::database_grant { 'mydatabasename':
     privilege => 'ALL',
-    table     => 'my_table',
-    db        => 'test2',
+    db        => 'mydatabasename',
     role      => 'marmot',
   }
 
