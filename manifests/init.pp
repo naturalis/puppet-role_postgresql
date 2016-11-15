@@ -38,6 +38,8 @@
 class role_postgresql (
   $listen_address = '*',
   $db_hash        = undef,
+  $role_hash      = undef,
+  $grant_hash     = undef,
   ) {
 
   class { 'postgresql::server':
@@ -59,10 +61,12 @@ class role_postgresql (
     }
   }
 
-  postgresql::server::database_grant { 'mydatabasename':
-    privilege => 'ALL',
-    db        => 'mydatabasename',
-    role      => 'marmot',
+  # Create grants
+  $grant_hash.each |$name, $grant| {
+    postgresql::server::database_grant { $name:
+      privilege => $grant["privilege"],
+      db        => $grant["db"],
+      role      => $grant["role"],
+    }
   }
-
 }
