@@ -44,7 +44,7 @@ class role_postgresql (
     listen_addresses => $listen_address,
   }
 
-  # Create databases (Puppet 4 only)
+  # Create databases
   $db_hash.each |$name, $db| {
     postgresql::server::db { $name:
       user     => $db["user"],
@@ -52,8 +52,11 @@ class role_postgresql (
     }
   }
 
-  postgresql::server::role { 'marmot':
-    password_hash => postgresql_password('marmot', 'mypasswd'),
+  # Create roles
+  $role_hash.each |$name, $role| {
+    postgresql::server::role { $name:
+      password_hash => postgresql_password($role["user"], $role["password"]),
+    }
   }
 
   postgresql::server::database_grant { 'mydatabasename':
