@@ -41,7 +41,7 @@ class role_postgresql (
   ) {
 
   class { 'postgresql::server':
-    listen_addresses => '*',
+    listen_addresses => $listen_address,
   }
 
   # Create databases (Puppet 4 only)
