@@ -43,12 +43,12 @@ class role_postgresql (
   class { 'postgresql::server':
     listen_addresses => '*',
   }
- 
+
   # Create databases (Puppet 4 only)
-  $db_hash.each |String $db| {
-    postgresql::server::db { $db:
-      user     => $user,
-      password => postgresql_password($user, $password),
+  $db_hash.each |$name, $db| {
+    postgresql::server::db { $name:
+      user     => $db["user"],
+      password => postgresql_password($db["user"], $db["password"]),
     }
   }
 
@@ -63,4 +63,3 @@ class role_postgresql (
   }
 
 }
-
