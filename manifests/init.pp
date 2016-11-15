@@ -36,7 +36,7 @@
 # Copyright 2016 Your name here, unless otherwise noted.
 #
 class role_postgresql (
-  $listen_address = '*',
+  $listen_address = undef,
   $db_hash        = undef,
   $role_hash      = undef,
   $grant_hash     = undef,
