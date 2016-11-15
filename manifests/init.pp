@@ -35,15 +35,19 @@
 #
 # Copyright 2016 Your name here, unless otherwise noted.
 #
-class role_postgresql {
+class role_postgresql (
+  $listen_address = '*',
+  $user           = 'mydatabaseuser',
+  $password       = 'mypassword',
+  ) {
 
   class { 'postgresql::server':
     listen_addresses => '*',
   }
  
   postgresql::server::db { 'mydatabasename':
-    user     => 'mydatabaseuser',
-    password => postgresql_password('mydatabaseuser', 'mypassword'),
+    user     => $user,
+    password => postgresql_password($user, $mypassword),
   }
 
   postgresql::server::role { 'marmot':
@@ -57,3 +61,4 @@ class role_postgresql {
   }
 
 }
+
