@@ -71,7 +71,7 @@ class role_postgresql (
     }
   }
   
-  # Remote access
+  # Remote connections
   $pg_hba_rule_hash.each |$name, $pg_hba_rule| {
     postgresql::server::pg_hba_rule { $name:
       description  => $pg_hba_rule["description"],
