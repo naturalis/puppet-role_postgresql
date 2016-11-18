@@ -78,7 +78,7 @@ class role_postgresql (
       type         => $pg_hba_rule["type"],
       database     => $pg_hba_rule["database"],
       user         => $pg_hba_rule["user"],
-      address      => $pg_hba_rule["user"],
+      address      => $pg_hba_rule["address"],
       auth_method  => $pg_hba_rule["auth_method"],
     }
   }
