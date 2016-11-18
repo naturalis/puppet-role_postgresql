@@ -36,10 +36,11 @@
 # Copyright 2016 Your name here, unless otherwise noted.
 #
 class role_postgresql (
-  $listen_address = undef,
-  $db_hash        = undef,
-  $role_hash      = undef,
-  $grant_hash     = undef,
+  $listen_address   = undef,
+  $db_hash          = undef,
+  $role_hash        = undef,
+  $grant_hash       = undef,
+  $pg_hba_rule_hash = undef,
   ) {
 
   class { 'postgresql::server':
