@@ -69,4 +69,15 @@ class role_postgresql (
       role      => $grant["role"],
     }
   }
+  
+  # Remote access
+  $pg_hba_rule_hash.each |$name, $pg_hba_rule| {
+    postgresql::server::pg_hba_rule { $name:
+      description  => $pg_hba_rule["description"],
+      type         => $pg_hba_rule["type"],
+      database     => $pg_hba_rule["database"],
+      user         => $pg_hba_rule["user"],
+      auth_method  => $pg_hba_rule["auth_method"],
+    }
+  }
 }
