@@ -43,6 +43,7 @@ class role_postgresql (
   $pg_hba_rule_hash = undef,
   ) {
 
+  # Install PostGreSQL:
   class { 'postgresql::server':
     listen_addresses => $listen_address,
   }
@@ -81,5 +82,10 @@ class role_postgresql (
       address      => $pg_hba_rule["address"],
       auth_method  => $pg_hba_rule["auth_method"],
     }
+  }
+  
+  # For performance logging
+  class postgresql::server::contrib {
+    package_name = postgresql-contrib-9.5
   }
 }
