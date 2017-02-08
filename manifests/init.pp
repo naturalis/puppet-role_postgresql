@@ -86,7 +86,7 @@ class role_postgresql (
   
   # For performance logging
   class { 'postgresql::server::contrib':
-    contrib_package_name => 'postgresql-contrib'
+    package_name => 'postgresql-contrib'
   }
 
 }
