@@ -42,7 +42,7 @@ class role_postgresql (
   $grant_hash       = undef,
   $pg_hba_rule_hash = undef,
   $analytics        = true,
-  cron_job_hash,
+  $cron_job_hash,
   ) {
 
   # Install PostGreSQL:
