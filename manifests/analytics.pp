@@ -4,7 +4,7 @@ class role_postgresql::analytics {
 
   # Postgres analytics scripts
   file { '/opt/postgresql':
-    source  => 'puppet:///modules/role_postgresql/analytics',
+    source  => 'puppet:///modules/role_postgresql',
     recurse => true,
   }
 
