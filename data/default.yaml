@@ -1,0 +1,35 @@
+# Install settings
+role_postgresql::listen_address: '*'
+
+# Databases
+role_postgresql::db_hash:
+  drupaldb:
+    user: 'drupal_user'
+    password: 'password'
+
+# Roles
+role_postgresql::role_hash:
+  drupal:
+    user: 'drupal_user'
+    password: 'password'
+  analytics:
+    user: 'analytics'
+    password: 'password'
+    superuser: true
+
+# Grants
+role_postgresql::grant_hash:
+  drupal:
+    privilege: 'ALL'
+    db: 'drupaldb'
+    role: 'drupal'
+
+# Remote connections
+role_postgresql::pg_hba_rule_hash:
+  all:
+    description: 'Allow all'
+    type: 'host'
+    database: 'drupaldb'
+    user: 'drupal_user'
+    address: '0.0.0.0/0'
+    auth_method: 'md5'
