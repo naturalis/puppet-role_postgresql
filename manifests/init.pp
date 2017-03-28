@@ -85,11 +85,6 @@ class role_postgresql (
     }
   }
   
-  # For performance logging
-  class { 'postgresql::server::contrib':
-    package_name => 'postgresql-contrib'
-  }
-
   # Analytics
   if $analytics {
     class { 'role_postgresql::analytics': }
