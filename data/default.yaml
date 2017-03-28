@@ -33,3 +33,24 @@ role_postgresql::pg_hba_rule_hash:
     user: 'drupal_user'
     address: '0.0.0.0/0'
     auth_method: 'md5'
+
+
+cron_job_hash:
+      pg_stat_all_tables:
+        minute: "*/1"
+        command: psql postgresql://analytics:password@localhost/drupaldb -f /opt/postgresql/pg_stat_all_tables.sql | head -n-2 | tail -n+3 | jq -c . >> /var/log/postgresql/pg_stat_all_tables.json
+      pg_statio_all_tables:
+        minute: "*/1"
+        command: psql postgresql://analytics:password@localhost/drupaldb -f /opt/postgresql/pg_statio_all_tables.sql | head -n-2 | tail -n+3 | jq -c . >> /var/log/postgresql/pg_statio_all_tables.json
+      pg_stat_statements:
+        minute: "*/60"
+        command: psql postgresql://analytics:password@localhost/drupaldb -f /opt/postgresql/pg_stat_statements.sql | head -n-2 | tail -n+3 | jq -c . >> /var/log/postgresql/pg_stat_statements.json
+      pg_stat_database:
+        minute: "*/1"
+        command: psql postgresql://analytics:password@localhost/postgres -f /opt/postgresql/pg_stat_database.sql | head -n-2 | tail -n+3 | jq -c . >> /var/log/postgresql/pg_stat_database.json
+      pg_stat_activity:
+        minute: "*/1"
+        command: psql postgresql://analytics:password@localhost/drupaldb -f /opt/postgresql/pg_stat_activity.sql | head -n-2 | tail -n+3 | jq -c . >> /var/log/postgresql/pg_stat_activity.json
+      iostat:
+        minute: "*/1"
+        command: "/bin/bash /opt/postgresql/iostat.sh"
