@@ -41,6 +41,7 @@ class role_postgresql (
   $role_hash        = undef,
   $grant_hash       = undef,
   $pg_hba_rule_hash = undef,
+  $analytics        = true,
   ) {
 
   # Install PostGreSQL:
@@ -89,4 +90,9 @@ class role_postgresql (
     package_name => 'postgresql-contrib'
   }
 
+  # Analytics
+  if $analytics {
+    class { 'role_postgresql::analytics': }
+  }
+   
 }
