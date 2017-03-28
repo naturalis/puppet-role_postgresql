@@ -13,4 +13,7 @@ class role_postgresql::analytics {
     recurse => true,
   }
 
+  # Create cron jobs
+  create_resources('cron', $role_postgresql::cron_job_hash)
+
 }
