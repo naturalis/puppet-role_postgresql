@@ -46,8 +46,15 @@ class role_postgresql (
   ) {
 
   # Install PostGreSQL:
+  class { 'postgresql::globals':
+    encoding => 'UTF-8',
+    locale   => 'en_US.UTF-8',
+  }
+  
+  # Needed if installing in Docker container
   class { 'postgresql::server':
     listen_addresses => $listen_address,
+    require          => Class['postgresql::globals'],
   }
 
   # Create databases
