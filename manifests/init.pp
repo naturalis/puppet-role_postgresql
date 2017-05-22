@@ -49,6 +49,7 @@ class role_postgresql (
   class { 'postgresql::globals':
     encoding => 'UTF-8',
     locale   => 'en_US.UTF-8',
+    version  => '9.6'
   }
   
   # Needed if installing in Docker container
