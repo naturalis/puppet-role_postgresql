@@ -95,6 +95,13 @@ class role_postgresql (
     }
   }
   
+  # Configure options in postgresql.conf
+  $config_values.each |$key, $value| {
+    postgresql::server::config_entry { $key:
+      value => $value
+    }
+  }
+  
   # Analytics
   if $analytics {
     class { 'role_postgresql::analytics': }
