@@ -36,10 +36,11 @@ role_postgresql::pg_hba_rule_hash:
 
 # Configure options in postgresql.conf
 role_postgresql::config_values:
-  log_destination: 'csvlog'
   logging_collector: 'on'
-  log_rotation_age: '1d'
+  log_destination: 'csvlog'
   log_min_messages: 'DEBUG5'
+  log_rotation_age: '1d'
+  log_rotation_size: '1GB'
 
 # Cron jobs for analytics
 role_postgresql::cron_job_hash:
