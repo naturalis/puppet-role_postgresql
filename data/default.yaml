@@ -39,7 +39,7 @@ role_postgresql::config_values:
   log_destination: 'csvlog'
   logging_collector: 'on'
   log_rotation_age: '1d'
-  client_min_messages: 'DEBUG5'
+  log_min_messages: 'DEBUG5'
 
 # Cron jobs for analytics
 role_postgresql::cron_job_hash:
