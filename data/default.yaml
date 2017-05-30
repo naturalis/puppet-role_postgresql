@@ -35,11 +35,11 @@ role_postgresql::pg_hba_rule_hash:
     auth_method: 'md5'
 
 # Configure options in postgresql.conf
-role_postgresql::config_options:
+role_postgresql::config_values:
   log_destination: 'csvlog'
   logging_collector: 'on'
   log_rotation_age: '1d'
-  syslog_facility: 'DEBUG5'
+  client_min_messages: 'DEBUG5'
 
 # Cron jobs for analytics
 role_postgresql::cron_job_hash:
