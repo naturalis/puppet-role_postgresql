@@ -23,6 +23,10 @@ role_postgresql::grant_hash:
     privilege: 'ALL'
     db: 'drupaldb'
     role: 'drupal'
+  analytics:
+    privilege: 'CONNECT'
+    db: 'drupaldb'
+    role: 'analytics'
 
 # Remote connections
 role_postgresql::pg_hba_rule_hash:
