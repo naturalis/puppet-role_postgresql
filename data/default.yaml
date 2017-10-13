@@ -42,9 +42,15 @@ role_postgresql::pg_hba_rule_hash:
 role_postgresql::config_values:
   logging_collector: 'on'
   log_destination: 'csvlog'
-  log_min_messages: 'DEBUG5'
+  log_filename: 'pglog'
+  log_file_mode: '0644'
+  log_truncate_on_rotation: 'on'
   log_rotation_age: '1d'
-  log_rotation_size: '1GB'
+  log_rotation_age: '1d'
+  log_rotation_size: '0'
+  log_directory: '/var/log/postgresql'
+  log_min_duration_statement: '0'
+  log_min_messages: 'INFO'
 
 # Cron jobs for analytics
 role_postgresql::cron_job_hash:
