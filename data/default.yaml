@@ -39,7 +39,7 @@ role_postgresql::pg_hba_rule_hash:
     auth_method: 'md5'
 
 # Configure options in postgresql.conf
-role_postgresql::config_values:
+role_postgresql::config_values_static:
   logging_collector: 'on'
   log_destination: 'csvlog'
   log_filename: 'pglog'
