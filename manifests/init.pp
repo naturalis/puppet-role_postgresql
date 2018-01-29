@@ -57,11 +57,12 @@ class role_postgresql (
     manage_package_repo => true,
     version             => '10'
   }
-  
+
   # Needed if installing in Docker container
   class { 'postgresql::server':
-    listen_addresses => $listen_address,
-    require          => Class['postgresql::globals'],
+    listen_addresses   => $listen_address,
+    manage_pg_hba_conf => false,
+    require            => Class['postgresql::globals'],
   }
 
   # Create databases
@@ -87,14 +88,26 @@ class role_postgresql (
       role      => $grant["role"],
     }
   }
-  
+
+  # Remote connections
+  $pg_hba_rule_hash.each |$name, $pg_hba_rule| {
+    postgresql::server::pg_hba_rule { $name:
+      description  => $pg_hba_rule["description"],
+      type         => $pg_hba_rule["type"],
+      database     => $pg_hba_rule["database"],
+      user         => $pg_hba_rule["user"],
+      address      => $pg_hba_rule["address"],
+      auth_method  => $pg_hba_rule["auth_method"],
+    }
+  }
+
   # Configure options in postgresql.conf
   $config_values.each |$key, $value| {
     postgresql::server::config_entry { $key:
       value => $value
     }
   }
-  
+
   # Analytics
   if $analytics {
     class { 'role_postgresql::analytics': }
