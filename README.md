@@ -57,7 +57,7 @@ with things. (We are working on automating this section!)
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+Tested with Ubuntu 16.04 and Puppet 5.
 
 ## Development
 
