@@ -55,7 +55,7 @@ class role_postgresql (
     encoding            => 'UTF-8',
     locale              => 'en_US.UTF-8',
     manage_package_repo => true,
-    version             => '9.6'
+    version             => '10'
   }
   
   # Needed if installing in Docker container
