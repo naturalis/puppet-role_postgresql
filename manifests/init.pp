@@ -54,14 +54,14 @@ class role_postgresql (
   class { 'postgresql::globals':
     encoding            => 'UTF-8',
     locale              => 'en_US.UTF-8',
-    manage_package_repo => true,
+    manage_package_repo => true, 
     version             => '10'
   }
 
   # Needed if installing in Docker container
   class { 'postgresql::server':
     listen_addresses   => $listen_address,
-    #manage_pg_hba_conf => false,
+    manage_pg_hba_conf => false, # Error: /Stage[main]/Postgresql::Server::Config/Concat[/etc/postgresql/10/main/pg_hba.conf]/Concat_file[/etc/postgresql/10/main/pg_hba.conf]: Failed to generate additional resources using 'eval_generate': comparison of Array with Array failed
     require            => Class['postgresql::globals'],
   }
 
