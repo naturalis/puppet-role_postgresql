@@ -61,7 +61,7 @@ class role_postgresql (
   # Needed if installing in Docker container
   class { 'postgresql::server':
     listen_addresses   => $listen_address,
-    manage_pg_hba_conf => false,
+    #manage_pg_hba_conf => false,
     require            => Class['postgresql::globals'],
   }
 
