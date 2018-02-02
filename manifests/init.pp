@@ -50,18 +50,17 @@ class role_postgresql (
   $config_values         = deep_merge($config_values_static, $config_values_dynamic)
   ) {
 
-  # Install PostGreSQL:
-  class { 'postgresql::server':
-    listen_addresses   => $listen_address,
-    require            => Class['postgresql::globals'],
-  }
-
   # Set global parameters
   class { 'postgresql::globals':
     encoding            => 'UTF-8',
     locale              => 'en_US.UTF-8',
     manage_package_repo => true, 
     version             => '10'
+  }
+
+  # Install PostGreSQL:
+  class { 'postgresql::server':
+    listen_addresses   => $listen_address,
   }
 
   # Create databases
