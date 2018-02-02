@@ -40,6 +40,8 @@ role_postgresql::pg_hba_rule_hash:
 
 # Configure options in postgresql.conf
 role_postgresql::config_values_static:
+#  shared_buffers: '2MB'
+#  effective_cache_size: '1GB'
   logging_collector: 'on'
   log_destination: 'csvlog'
   log_filename: 'pglog'
