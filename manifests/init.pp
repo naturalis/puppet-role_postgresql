@@ -45,7 +45,7 @@ class role_postgresql (
   $cron_job_hash         = undef,
   $config_values_static  = undef,
   $config_values_dynamic = { 'shared_buffers'       => $facts['memory']['system']['total_bytes'] * 1/8192,
-                             'effective_cache_size' => $facts['memory']['system']['total_bytes'] * 3/4
+                             'effective_cache_size' => $facts['memory']['system']['total_bytes'] * 2/4
                            },
   $config_values         = deep_merge($config_values_dynamic, $config_values_static)
   ) {
