@@ -51,18 +51,17 @@ class role_postgresql (
   ) {
 
   # Install PostGreSQL:
+  class { 'postgresql::server':
+    listen_addresses   => $listen_address,
+    require            => Class['postgresql::globals'],
+  }
+
+  # Set global parameters
   class { 'postgresql::globals':
     encoding            => 'UTF-8',
     locale              => 'en_US.UTF-8',
     manage_package_repo => true, 
     version             => '10'
-  }
-
-  # Needed if installing in Docker container
-  class { 'postgresql::server':
-    listen_addresses   => $listen_address,
-    manage_pg_hba_conf => false, # Error: /Stage[main]/Postgresql::Server::Config/Concat[/etc/postgresql/10/main/pg_hba.conf]/Concat_file[/etc/postgresql/10/main/pg_hba.conf]: Failed to generate additional resources using 'eval_generate': comparison of Array with Array failed
-    require            => Class['postgresql::globals'],
   }
 
   # Create databases
@@ -90,16 +89,16 @@ class role_postgresql (
   }
 
   # Remote connections
-  #$pg_hba_rule_hash.each |$name, $pg_hba_rule| {
-  #  postgresql::server::pg_hba_rule { $name:
-  #    description  => $pg_hba_rule["description"],
-  #    type         => $pg_hba_rule["type"],
-  #    database     => $pg_hba_rule["database"],
-  #    user         => $pg_hba_rule["user"],
-  #    address      => $pg_hba_rule["address"],
-  #    auth_method  => $pg_hba_rule["auth_method"],
-  #  }
-  #}
+  $pg_hba_rule_hash.each |$name, $pg_hba_rule| {
+    postgresql::server::pg_hba_rule { $name:
+      description  => $pg_hba_rule["description"],
+      type         => $pg_hba_rule["type"],
+      database     => $pg_hba_rule["database"],
+      user         => $pg_hba_rule["user"],
+      address      => $pg_hba_rule["address"],
+      auth_method  => $pg_hba_rule["auth_method"],
+    }
+  }
 
   # Configure options in postgresql.conf
   $config_values.each |$key, $value| {
