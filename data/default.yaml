@@ -1,6 +1,9 @@
 # Install settings
 role_postgresql::listen_address: '*'
 
+# Global settings
+role_postgresql::version: '10'
+
 # Databases
 role_postgresql::db_hash:
   drupaldb:
