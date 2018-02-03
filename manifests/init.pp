@@ -55,7 +55,7 @@ class role_postgresql (
     encoding            => 'UTF-8',
     locale              => 'en_US.UTF-8',
     manage_package_repo => true, 
-    version             => '10'
+    version             => $version
   }
 
   # Install PostGreSQL:
