@@ -1,6 +1,9 @@
 # Install settings
 role_postgresql::listen_address: '*'
 
+# Global settings
+role_postgresql::version: '10'
+
 # Databases
 role_postgresql::db_hash:
   drupaldb:
@@ -39,7 +42,9 @@ role_postgresql::pg_hba_rule_hash:
     auth_method: 'md5'
 
 # Configure options in postgresql.conf
-role_postgresql::config_values:
+role_postgresql::config_values_static:
+#  shared_buffers: '2MB'        # override dynamic setting
+#  effective_cache_size: '1GB'  # override dynamic setting
   logging_collector: 'on'
   log_destination: 'csvlog'
   log_filename: 'pglog'
@@ -54,21 +59,9 @@ role_postgresql::config_values:
 
 # Cron jobs for analytics
 role_postgresql::cron_job_hash:
-  pg_stat_all_tables:
+  analytics:
     minute: "*/1"
-    command: psql -t postgresql://analytics:password@localhost/drupaldb -f /opt/postgresql/pg_stat_all_tables.sql | jq -c . >> /var/log/postgresql/pg_stat_all_tables.json
-  pg_statio_all_tables:
-    minute: "*/1"
-    command: psql -t postgresql://analytics:password@localhost/drupaldb -f /opt/postgresql/pg_statio_all_tables.sql | jq -c . >> /var/log/postgresql/pg_statio_all_tables.json
-  pg_stat_statements:
-    minute: "*/60"
-    command: psql -t postgresql://analytics:password@localhost/drupaldb -f /opt/postgresql/pg_stat_statements.sql | jq -c . >> /var/log/postgresql/pg_stat_statements.json
-  pg_stat_database:
-    minute: "*/1"
-    command: psql -t postgresql://analytics:password@localhost/postgres -f /opt/postgresql/pg_stat_database.sql | jq -c . >> /var/log/postgresql/pg_stat_database.json
-  pg_stat_activity:
-    minute: "*/1"
-    command: psql -t postgresql://analytics:password@localhost/drupaldb -f /opt/postgresql/pg_stat_activity.sql | jq -c . >> /var/log/postgresql/pg_stat_activity.json
+    command: psql -t postgresql://analytics:password@localhost/drupaldb -f /opt/postgresql/analytics.sql | jq -c . >> /var/log/postgresql/analytics.json
   iostat:
     minute: "*/1"
     command: "/bin/bash /opt/postgresql/iostat.sh"
