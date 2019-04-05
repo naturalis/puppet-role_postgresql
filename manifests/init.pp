@@ -1,6 +1,7 @@
 # == Class: role_postgresql
 #
 class role_postgresql (
+  $version               = undef,
   $listen_address        = undef,
   $db_hash               = undef,
   $role_hash             = undef,
