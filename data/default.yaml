@@ -2,7 +2,7 @@
 role_postgresql::listen_address: '*'
 
 # Global settings
-role_postgresql::version: '10'
+role_postgresql::version: '11'
 
 # Databases
 role_postgresql::db_hash:
