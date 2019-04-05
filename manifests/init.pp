@@ -27,7 +27,7 @@ class role_postgresql (
   # Install PostGreSQL:
   class { 'postgresql::server':
     listen_addresses => $listen_address,
-    require          => Class['postgresql::globals']
+    #require          => Class['postgresql::globals']
   }
 
   # Create databases
