@@ -36,8 +36,8 @@ role_postgresql::pg_hba_rule_hash:
   all:
     description: 'Allow all'
     type: 'host'
-    database: 'drupaldb'
-    user: 'drupal_user'
+    database: 'all'
+    user: 'all'
     address: '0.0.0.0/0'
     auth_method: 'md5'
 
