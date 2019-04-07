@@ -2,7 +2,7 @@
 #
 class role_postgresql (
   $version               = undef,
-  $postgres_password
+  $postgres_password     = undef,
   $listen_address        = undef,
   $db_hash               = undef,
   $role_hash             = undef,
