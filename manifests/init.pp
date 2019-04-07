@@ -2,6 +2,7 @@
 #
 class role_postgresql (
   $version               = undef,
+  $postgres_password
   $listen_address        = undef,
   $db_hash               = undef,
   $role_hash             = undef,
@@ -26,7 +27,8 @@ class role_postgresql (
 
   # Install PostGreSQL:
   class { 'postgresql::server':
-    listen_addresses => $listen_address,
+    listen_addresses  => $listen_address,
+    postgres_password => $postgres_password
     #require          => Class['postgresql::globals']
   }
 
