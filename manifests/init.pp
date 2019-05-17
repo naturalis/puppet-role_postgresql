@@ -4,18 +4,22 @@ class role_postgresql (
   $version               = undef,
   $postgres_password     = undef,
   $listen_address        = undef,
-  $db_hash               = undef,
+  $db_hash               = "
+---
+  drupaldb:
+    user: 'drupal_user'
+    password: 'password'
+---"
   $role_hash             = undef,
   $grant_hash            = undef,
   $pg_hba_rule_hash      = undef,
   $analytics             = true,
   $cron_job_hash         = undef,
-  $config_values_static  = undef,
-  $config_values_dynamic = { 'shared_buffers'       => $facts['memory']['system']['total_bytes'] * 1/8192,
-                             'effective_cache_size' => $facts['memory']['system']['total_bytes'] * 2/4
-                           },
-  $config_values         = deep_merge($config_values_dynamic, $config_values_static)
+  $config_values         = undef,
   ) {
+
+  $db_hash_1 = parseyaml($db_hash)
+
 
   # Set global parameters
   class { 'postgresql::globals':
@@ -33,7 +37,7 @@ class role_postgresql (
   }
 
   # Create databases
-  $db_hash.each |$name, $db| {
+  $db_hash_1.each |$name, $db| {
     postgresql::server::db { $name:
       user     => $db["user"],
       password => postgresql_password($db["user"], $db["password"]),
