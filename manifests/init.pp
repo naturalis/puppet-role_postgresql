@@ -16,21 +16,7 @@ drupaldb:
   $pg_hba_rule_hash      = undef,
   $analytics             = true,
   $cron_job_hash         = undef,
-  $config_values         = '
----
-logging_collector: 'on'
-log_destination: 'csvlog'
-log_filename: 'pglog'
-log_file_mode: '0644'
-log_truncate_on_rotation: 'on'
-log_rotation_age: '1d'
-log_rotation_age: '1d'
-log_rotation_size: '0'
-log_directory: '/var/log/postgresql'
-log_min_duration_statement: '0'
-log_min_messages: 'INFO'
-...
-  ',
+  $config_values         = undef
 ) {
 
   $_db_hash = parseyaml($db_hash)
@@ -52,12 +38,15 @@ log_min_messages: 'INFO'
   }
 
   # Create databases
-  $db_hash_1.each |$name, $db| {
-    postgresql::server::db { $name:
-      user     => $db["user"],
-      password => postgresql_password($db["user"], $db["password"]),
-    }
-  }
+  #$db_hash_1.each |$name, $db| {
+  #  postgresql::server::db { $name:
+  #    user     => $db["user"],
+  #    password => postgresql_password($db["user"], $db["password"]),
+  #  }
+  #}
+
+  $db = lookup('postgresql::server::db', {})
+  create_resources(postgresql::server::db, $db)
 
   # Create roles
   $role_hash.each |$name, $role| {
