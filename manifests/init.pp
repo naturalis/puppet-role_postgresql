@@ -1,27 +1,42 @@
 # == Class: role_postgresql
 #
 class role_postgresql (
-  $version               = undef,
-  $postgres_password     = undef,
-  $listen_address        = undef,
-  $db_hash               = "
+  $version               = '11',
+  $postgres_password     = 'password',
+  $listen_address        = '*',
+  $db_hash               = '
 ---
-  drupaldb:
-    user: 'drupal_user'
-    password: 'password'
----"
+drupaldb:
+  user: drupal_user
+  password: password
+...
+  ',
   $role_hash             = undef,
   $grant_hash            = undef,
   $pg_hba_rule_hash      = undef,
   $analytics             = true,
   $cron_job_hash         = undef,
-  $config_values         = undef,
-  ) {
+  $config_values         = '
+---
+logging_collector: 'on'
+log_destination: 'csvlog'
+log_filename: 'pglog'
+log_file_mode: '0644'
+log_truncate_on_rotation: 'on'
+log_rotation_age: '1d'
+log_rotation_age: '1d'
+log_rotation_size: '0'
+log_directory: '/var/log/postgresql'
+log_min_duration_statement: '0'
+log_min_messages: 'INFO'
+...
+  ',
+) {
 
-  $db_hash_1 = parseyaml($db_hash)
+  $_db_hash = parseyaml($db_hash)
+  $_config_values = parseyaml($config_values)
 
-
-  # Set global parameters
+  # Set global parametes
   class { 'postgresql::globals':
     encoding            => 'UTF-8',
     locale              => 'en_US.UTF-8',
@@ -73,7 +88,7 @@ class role_postgresql (
   }
 
   # Configure options in postgresql.conf
-  $config_values.each |$key, $value| {
+  $_config_values.each |$key, $value| {
     postgresql::server::config_entry { $key:
       value => $value
     }
