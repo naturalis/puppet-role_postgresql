@@ -4,13 +4,13 @@ class role_postgresql (
   $version               = '11',
   $postgres_password     = 'password',
   $listen_address        = '*',
-  $db_hash               = '
+  $db_hash               = "
 ---
 drupaldb:
-  user: drupal_user
-  password: password
+  user: 'drupal_user'
+  password: 'password'
 ...
-  ',
+  ",
   $role_hash             = undef,
   $grant_hash            = undef,
   $pg_hba_rule_hash      = undef,
@@ -45,7 +45,7 @@ drupaldb:
   #  }
   #}
 
-  $db = lookup('postgresql::server::db', {})
+  #$db = lookup('postgresql::server::db', {})
   create_resources(postgresql::server::db, $db)
 
   # Create roles
