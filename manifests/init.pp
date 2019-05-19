@@ -16,11 +16,16 @@ drupaldb:
   $pg_hba_rule_hash      = undef,
   $analytics             = true,
   $cron_job_hash         = undef,
-  $config_values         = undef
+  $config_entry          = "
+---
+wal_level:
+  value: 'hot_standby'
+...
+  "
 ) {
 
   $_db_hash = parseyaml($db_hash)
-  $_config_values = parseyaml($config_values)
+  $_config_entry = parseyaml($config_entry)
 
   # Set global parametes
   class { 'postgresql::globals':
@@ -34,19 +39,10 @@ drupaldb:
   class { 'postgresql::server':
     listen_addresses  => $listen_address,
     postgres_password => $postgres_password
-    #require          => Class['postgresql::globals']
   }
 
   # Create databases
-  #$db_hash_1.each |$name, $db| {
-  #  postgresql::server::db { $name:
-  #    user     => $db["user"],
-  #    password => postgresql_password($db["user"], $db["password"]),
-  #  }
-  #}
-
-  #$db = lookup('postgresql::server::db', {})
-  create_resources(postgresql::server::db, $db)
+  create_resources(postgresql::server::db, $_db_hash)
 
   # Create roles
   $role_hash.each |$name, $role| {
@@ -77,11 +73,7 @@ drupaldb:
   }
 
   # Configure options in postgresql.conf
-  $_config_values.each |$key, $value| {
-    postgresql::server::config_entry { $key:
-      value => $value
-    }
-  }
+  create_resources(postgresql::server::config_entry, $_config_entry)
 
   # Analytics
   if $analytics {
