@@ -19,11 +19,9 @@ db2:
   $role = "
 ---
 user1:
-  user: 'user1'
-  password: 'password'
+  password_hash: 'password'
 analytics:
-  user: 'analytics'
-  password: 'password'
+  password_hash: 'password'
 ...
   ",
   $database_grant = "
