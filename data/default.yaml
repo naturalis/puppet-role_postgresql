@@ -11,7 +11,7 @@ role_postgresql::db_hash:
     password: 'password'
 
 # Roles
-role_postgresql::role_hash:
+role_postgresql::_role:
   drupal:
     user: 'drupal_user'
     password: 'password'
@@ -21,7 +21,7 @@ role_postgresql::role_hash:
     superuser: true
 
 # Grants
-role_postgresql::grant_hash:
+role_postgresql::_grant_hash:
   drupal:
     privilege: 'ALL'
     db: 'drupaldb'
@@ -32,7 +32,7 @@ role_postgresql::grant_hash:
     role: 'analytics'
 
 # Remote connections
-role_postgresql::pg_hba_rule_hash:
+role_postgresql::_pg_hba_rule:
   all:
     description: 'Allow all'
     type: 'host'
@@ -42,7 +42,7 @@ role_postgresql::pg_hba_rule_hash:
     auth_method: 'md5'
 
 # Configure options in postgresql.conf
-role_postgresql::config_values_static:
+role_postgresql::_config_values:
 #  shared_buffers: '2MB'        # override dynamic setting
 #  effective_cache_size: '1GB'  # override dynamic setting
   logging_collector: 'on'
