@@ -45,8 +45,28 @@ all:
   ",  
   $config_entry = "
 ---
-wal_level:
-  value: 'hot_standby'
+logging_collector:
+  value: 'on'
+log_destination:
+  value: 'csvlog'
+log_filename:
+  value: 'pglog'
+log_file_mode:
+  value: '0644'
+log_truncate_on_rotation:
+  value: 'on'
+log_rotation_age:
+  value: '1d'
+log_rotation_age:
+  value: '1d'
+log_rotation_size:
+  value: '0'
+log_directory:
+  value: '/var/log/postgresql'
+log_min_duration_statement:
+  value: '0'
+log_min_messages:
+  value: 'INFO'
 ...
   "
 ) {
