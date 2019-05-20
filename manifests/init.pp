@@ -26,7 +26,7 @@ user2:
   password: 'password'
 ...
   ",
-  $grant_hash = ",
+  $database_grant = "
 ---
 analytics:
   privilege: 'CONNECT'
