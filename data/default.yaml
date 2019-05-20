@@ -5,7 +5,7 @@ role_postgresql::listen_address: '*'
 role_postgresql::version: '11'
 
 # Databases
-role_postgresql::db_hash:
+role_postgresql::_db:
   drupaldb:
     user: 'drupal_user'
     password: 'password'
@@ -21,7 +21,7 @@ role_postgresql::_role:
     superuser: true
 
 # Grants
-role_postgresql::_grant_hash:
+role_postgresql::_database_grant:
   drupal:
     privilege: 'ALL'
     db: 'drupaldb'
@@ -42,20 +42,29 @@ role_postgresql::_pg_hba_rule:
     auth_method: 'md5'
 
 # Configure options in postgresql.conf
-role_postgresql::_config_values:
-#  shared_buffers: '2MB'        # override dynamic setting
-#  effective_cache_size: '1GB'  # override dynamic setting
-  logging_collector: 'on'
-  log_destination: 'csvlog'
-  log_filename: 'pglog'
-  log_file_mode: '0644'
-  log_truncate_on_rotation: 'on'
-  log_rotation_age: '1d'
-  log_rotation_age: '1d'
-  log_rotation_size: '0'
-  log_directory: '/var/log/postgresql'
-  log_min_duration_statement: '0'
-  log_min_messages: 'INFO'
+role_postgresql::_config_entry:
+  logging_collector:
+    value: 'on'
+  log_destination:
+    value: 'csvlog'
+  log_filename:
+    value: 'pglog'
+  log_file_mode:
+    value: '0644'
+  log_truncate_on_rotation:
+    value: 'on'
+  log_rotation_age:
+    value: '1d'
+  log_rotation_age:
+    value: '1d'
+  log_rotation_size:
+    value: '0'
+  log_directory:
+    value: '/var/log/postgresql'
+  log_min_duration_statement:
+    value: '0'
+  log_min_messages:
+    value: 'INFO'
 
 # Cron jobs for analytics
 role_postgresql::cron_job_hash:
