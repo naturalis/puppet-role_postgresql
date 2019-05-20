@@ -8,11 +8,11 @@ class role_postgresql (
   $cron_job_hash         = undef,
   $db = "
 ---
-drupaldb:
-  user: 'drupal_user'
+db1:
+  user: 'db1_user'
   password: 'password'
-db:
-  user: 'db_user'
+db2:
+  user: 'db2_user'
   password: 'password'
 ...
   ",
@@ -21,8 +21,8 @@ db:
 user1:
   user: 'user1'
   password: 'password'
-user2:
-  user: 'user2'
+analytics:
+  user: 'analytics'
   password: 'password'
 ...
   ",
@@ -30,7 +30,7 @@ user2:
 ---
 analytics:
   privilege: 'CONNECT'
-  db: 'drupaldb'
+  db: 'db1'
   role: 'analytics'
 ...
   ",
