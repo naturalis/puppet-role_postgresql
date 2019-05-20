@@ -4,19 +4,48 @@ class role_postgresql (
   $version               = '11',
   $postgres_password     = 'password',
   $listen_address        = '*',
-  $db_hash               = "
+  $analytics             = true,
+  $cron_job_hash         = undef,
+  $db = "
 ---
 drupaldb:
   user: 'drupal_user'
   password: 'password'
+db:
+  user: 'db_user'
+  password: 'password'
 ...
   ",
-  $role_hash             = undef,
-  $grant_hash            = undef,
-  $pg_hba_rule_hash      = undef,
-  $analytics             = true,
-  $cron_job_hash         = undef,
-  $config_entry          = "
+  $role = "
+---
+user1:
+  user: 'user1'
+  password: 'password'
+user2:
+  user: 'user2'
+  password: 'password'
+...
+  ",
+  $grant_hash = ",
+---
+analytics:
+  privilege: 'CONNECT'
+  db: 'drupaldb'
+  role: 'analytics'
+...
+  ",
+  $pg_hba_rule = "
+---
+all:
+  description: 'Allow all'
+  type: 'host'
+  database: 'all'
+  user: 'all'
+  address: '0.0.0.0/0'
+  auth_method: 'md5'
+...
+  ",  
+  $config_entry = "
 ---
 wal_level:
   value: 'hot_standby'
@@ -24,7 +53,10 @@ wal_level:
   "
 ) {
 
-  $_db_hash = parseyaml($db_hash)
+  $_db = parseyaml($db)
+  $_role = parseyaml($role)
+  $_database_grant = parseyaml($database_grant)
+  $_pg_hba_rule = parseyaml($pg_hba_rule)
   $_config_entry = parseyaml($config_entry)
 
   # Set global parametes
@@ -42,37 +74,18 @@ wal_level:
   }
 
   # Create databases
-  create_resources(postgresql::server::db, $_db_hash)
+  create_resources(postgresql::server::db, $_db)
 
   # Create roles
-  $role_hash.each |$name, $role| {
-    postgresql::server::role { $name:
-      password_hash => postgresql_password($role["user"], $role["password"]),
-    }
-  }
+  create_resources(postgresql::server::role, $_role)
 
   # Create grants
-  $grant_hash.each |$name, $grant| {
-    postgresql::server::database_grant { $name:
-      privilege => $grant["privilege"],
-      db        => $grant["db"],
-      role      => $grant["role"],
-    }
-  }
+  create_resources(postgresql::server::database_grant, $_database_grant)
 
   # Remote connections
-  $pg_hba_rule_hash.each |$name, $pg_hba_rule| {
-    postgresql::server::pg_hba_rule { $name:
-      description => $pg_hba_rule["description"],
-      type        => $pg_hba_rule["type"],
-      database    => $pg_hba_rule["database"],
-      user        => $pg_hba_rule["user"],
-      address     => $pg_hba_rule["address"],
-      auth_method => $pg_hba_rule["auth_method"],
-    }
-  }
+  create_resources(postgresql::server::pg_hba_rule, $_pg_hba_rule)
 
-  # Configure options in postgresql.conf
+  # Config options
   create_resources(postgresql::server::config_entry, $_config_entry)
 
   # Analytics
