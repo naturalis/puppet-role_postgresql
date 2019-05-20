@@ -1,7 +1,7 @@
 # == Class: role_postgresql
 #
 class role_postgresql (
-  $version               = '11',
+  $version               = '9.6',
   $postgres_password     = 'password',
   $listen_address        = '*',
   $analytics             = true,
