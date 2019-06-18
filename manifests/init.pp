@@ -4,7 +4,7 @@ class role_postgresql (
   $version               = '11',
   $postgres_password     = 'password',
   $listen_address        = '*',
-  $analytics             = true,
+  $analytics             = false,
   $cron_job_hash         = undef,
   $db = "
 ---
