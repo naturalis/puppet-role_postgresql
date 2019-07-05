@@ -120,7 +120,9 @@ log_min_messages:
   create_resources(postgresql::server::config_entry, $_config_entry)
 
   # Create recovery.conf
-  create_resources(postgresql::server::recovery, $_recovery)
+  if $manage_recovery_conf {
+    create_resources(postgresql::server::recovery, $_recovery)
+  }
 
   # Analytics
   if $analytics {
