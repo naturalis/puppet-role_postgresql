@@ -20,6 +20,9 @@ db2:
 ---
 user1:
   password_hash: 'password'
+replicator:
+  password_hash: 'password'
+  replication: true
 analytics:
   password_hash: 'password'
 ...
