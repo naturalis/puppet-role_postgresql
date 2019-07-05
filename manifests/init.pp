@@ -109,6 +109,9 @@ log_min_messages:
   # Config options
   create_resources(postgresql::server::config_entry, $_config_entry)
 
+  # Create recovery.conf
+  create_resources(postgresql::server::recovery, $_recovery)
+
   # Analytics
   if $analytics {
     class { 'role_postgresql::analytics': }
