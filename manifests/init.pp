@@ -6,6 +6,7 @@ class role_postgresql (
   $listen_address        = '*',
   $analytics             = false,
   $cron_job_hash         = undef,
+  $manage_recovery_conf  = true,
   $db = "
 ---
 db1:
@@ -45,7 +46,14 @@ all:
   address: '0.0.0.0/0'
   auth_method: 'md5'
 ...
-  ",  
+  ",
+  $recovery = "
+---
+hash:
+  standby_mode: on
+  primary_conninfo: 'host=localhost port=5432'
+...
+  ",
   $config_entry = "
 ---
 logging_collector:
@@ -79,6 +87,7 @@ log_min_messages:
   $_database_grant = parseyaml($database_grant)
   $_pg_hba_rule = parseyaml($pg_hba_rule)
   $_config_entry = parseyaml($config_entry)
+  $_recovery = parseyaml($recovery)
 
   # Set global parametes
   class { 'postgresql::globals':
@@ -90,8 +99,9 @@ log_min_messages:
 
   # Install PostGreSQL:
   class { 'postgresql::server':
-    listen_addresses  => $listen_address,
-    postgres_password => $postgres_password
+    listen_addresses     => $listen_address,
+    postgres_password    => $postgres_password,
+    manage_recovery_conf => $manage_recovery_conf
   }
 
   # Create databases
