@@ -1,73 +1,111 @@
 # == Class: role_postgresql
 #
 class role_postgresql (
-  $listen_address   = undef,
-  $db_hash          = undef,
-  $role_hash        = undef,
-  $grant_hash       = undef,
-  $pg_hba_rule_hash = undef,
-  $analytics        = true,
-  $cron_job_hash    = undef,
-  $config_values    = undef,
-  ) {
+  $version               = '11',
+  $postgres_password     = 'password',
+  $listen_address        = '*',
+  $analytics             = false,
+  $cron_job_hash         = undef,
+  $db = "
+---
+db1:
+  user: 'db1_user'
+  password: 'password'
+db2:
+  user: 'db2_user'
+  password: 'password'
+...
+  ",
+  $role = "
+---
+user1:
+  password_hash: 'password'
+analytics:
+  password_hash: 'password'
+...
+  ",
+  $database_grant = "
+---
+analytics:
+  privilege: 'CONNECT'
+  db: 'db1'
+  role: 'analytics'
+...
+  ",
+  $pg_hba_rule = "
+---
+all:
+  description: 'Allow all'
+  type: 'host'
+  database: 'all'
+  user: 'all'
+  address: '0.0.0.0/0'
+  auth_method: 'md5'
+...
+  ",  
+  $config_entry = "
+---
+logging_collector:
+  value: 'on'
+log_destination:
+  value: 'csvlog'
+log_filename:
+  value: 'pglog'
+log_file_mode:
+  value: '0644'
+log_truncate_on_rotation:
+  value: 'on'
+log_rotation_age:
+  value: '1d'
+log_rotation_age:
+  value: '1d'
+log_rotation_size:
+  value: '0'
+log_directory:
+  value: '/var/log/postgresql'
+log_min_duration_statement:
+  value: '0'
+log_min_messages:
+  value: 'INFO'
+...
+  "
+) {
 
-  # Install PostGreSQL:
+  $_db = parseyaml($db)
+  $_role = parseyaml($role)
+  $_database_grant = parseyaml($database_grant)
+  $_pg_hba_rule = parseyaml($pg_hba_rule)
+  $_config_entry = parseyaml($config_entry)
+
+  # Set global parametes
   class { 'postgresql::globals':
     encoding            => 'UTF-8',
     locale              => 'en_US.UTF-8',
-    manage_package_repo => true,
-    version             => '9.6'
+    manage_package_repo => true, 
+    version             => $version
   }
-  
-  # Needed if installing in Docker container
+
+  # Install PostGreSQL:
   class { 'postgresql::server':
-    listen_addresses => $listen_address,
-    require          => Class['postgresql::globals'],
+    listen_addresses  => $listen_address,
+    postgres_password => $postgres_password
   }
 
   # Create databases
-  $db_hash.each |$name, $db| {
-    postgresql::server::db { $name:
-      user     => $db["user"],
-      password => postgresql_password($db["user"], $db["password"]),
-    }
-  }
+  create_resources(postgresql::server::db, $_db)
 
   # Create roles
-  $role_hash.each |$name, $role| {
-    postgresql::server::role { $name:
-      password_hash => postgresql_password($role["user"], $role["password"]),
-    }
-  }
+  create_resources(postgresql::server::role, $_role)
 
   # Create grants
-  $grant_hash.each |$name, $grant| {
-    postgresql::server::database_grant { $name:
-      privilege => $grant["privilege"],
-      db        => $grant["db"],
-      role      => $grant["role"],
-    }
-  }
-  
+  create_resources(postgresql::server::database_grant, $_database_grant)
+
   # Remote connections
-  $pg_hba_rule_hash.each |$name, $pg_hba_rule| {
-    postgresql::server::pg_hba_rule { $name:
-      description  => $pg_hba_rule["description"],
-      type         => $pg_hba_rule["type"],
-      database     => $pg_hba_rule["database"],
-      user         => $pg_hba_rule["user"],
-      address      => $pg_hba_rule["address"],
-      auth_method  => $pg_hba_rule["auth_method"],
-    }
-  }
-  
-  # Configure options in postgresql.conf
-  $config_values.each |$key, $value| {
-    postgresql::server::config_entry { $key:
-      value => $value
-    }
-  }
-  
+  create_resources(postgresql::server::pg_hba_rule, $_pg_hba_rule)
+
+  # Config options
+  create_resources(postgresql::server::config_entry, $_config_entry)
+
   # Analytics
   if $analytics {
     class { 'role_postgresql::analytics': }
