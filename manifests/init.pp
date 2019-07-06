@@ -82,13 +82,6 @@ log_min_messages:
   "
 ) {
 
-  $_db = parseyaml($db)
-  $_role = parseyaml($role)
-  $_database_grant = parseyaml($database_grant)
-  $_pg_hba_rule = parseyaml($pg_hba_rule)
-  $_config_entry = parseyaml($config_entry)
-  $_recovery = parseyaml($recovery)
-
   # Set global parametes
   class { 'postgresql::globals':
     encoding            => 'UTF-8',
@@ -105,23 +98,23 @@ log_min_messages:
   }
 
   # Create databases
-  create_resources(postgresql::server::db, $_db)
+  create_resources(postgresql::server::db, parseyaml($db,$db))
 
   # Create roles
-  create_resources(postgresql::server::role, $_role)
+  create_resources(postgresql::server::role, parseyaml($role,$role))
 
   # Create grants
-  create_resources(postgresql::server::database_grant, $_database_grant)
+  create_resources(postgresql::server::database_grant, parseyaml($database_grant,$database_grant))
 
   # Remote connections
-  create_resources(postgresql::server::pg_hba_rule, $_pg_hba_rule)
+  create_resources(postgresql::server::pg_hba_rule, parseyaml($pg_hba_rule,$pg_hba_rule))
 
   # Config options
-  create_resources(postgresql::server::config_entry, $_config_entry)
+  create_resources(postgresql::server::config_entry, parseyaml($config_entry,$config_entry))
 
   # Create recovery.conf
   if $manage_recovery_conf {
-    create_resources(postgresql::server::recovery, $_recovery)
+    create_resources(postgresql::server::recovery, parseyaml($recovery,$recovery))
   }
 
   # Analytics
