@@ -39,10 +39,17 @@ analytics:
   $pg_hba_rule = "
 ---
 all:
-  description: 'Allow all'
+  description: 'allow all'
   type: 'host'
   database: 'all'
   user: 'all'
+  address: '0.0.0.0/0'
+  auth_method: 'md5'
+replicator:
+  description: 'replication'
+  type: 'host'
+  database: 'replication'
+  user: 'replicator'
   address: '0.0.0.0/0'
   auth_method: 'md5'
 ...
