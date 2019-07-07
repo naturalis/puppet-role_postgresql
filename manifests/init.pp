@@ -85,6 +85,10 @@ log_min_duration_statement:
   value: '0'
 log_min_messages:
   value: 'INFO'
+wal_level:
+  value: replica
+hot_standby:
+  value: on
 ...
   "
 ) {
