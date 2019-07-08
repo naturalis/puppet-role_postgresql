@@ -19,6 +19,8 @@ This is a wrapper module around puppetlabs/postgresql. It will install the datab
 Test with Vagrant. See directory vagrant.
 
     vagrant up
+    vagrant ssh primary
+    vagrant ssh secondary
 
 ## Usage
 
