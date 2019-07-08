@@ -41,11 +41,11 @@ Run on secondary:
 
     systemctl start postgresql
     
-Check replication status on master:
+Check replication status on primary (master):
 
     select * from pg_stat_replication;
 
-Check replication status on slave:
+Check replication status on secondary (slave):
 
     select * from pg_stat_wal_receiver;
     watch -n 2 "ps -aux | grep streaming"
