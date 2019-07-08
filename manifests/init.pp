@@ -89,6 +89,10 @@ wal_level:
   value: 'replica'
 hot_standby:
   value: 'on'
+archive_mode:
+  value: 'on'
+archive_command:
+  value: 'cp %p /var/lib/postgresql/11/archive/%f'
 ...
   "
 ) {
