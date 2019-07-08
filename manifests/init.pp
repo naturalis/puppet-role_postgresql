@@ -106,7 +106,7 @@ hot_standby:
     version             => $version
   }
 
-  # Install PostGreSQL:
+  # Install PostgreSQL:
   class { 'postgresql::server':
     listen_addresses     => $listen_address,
     postgres_password    => $postgres_password,
