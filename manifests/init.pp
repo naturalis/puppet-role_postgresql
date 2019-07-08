@@ -93,8 +93,13 @@ hot_standby:
   "
 ) {
 
+  stage { 'first':
+    before => Stage["main"],
+  }
+
   # Set global parametes
   class { 'postgresql::globals':
+    stage               => first,
     encoding            => 'UTF-8',
     locale              => 'en_US.UTF-8',
     manage_package_repo => true, 
@@ -103,6 +108,7 @@ hot_standby:
 
   # Install PostGreSQL:
   class { 'postgresql::server':
+    stage                => first,
     listen_addresses     => $listen_address,
     postgres_password    => $postgres_password,
     manage_recovery_conf => $manage_recovery_conf
