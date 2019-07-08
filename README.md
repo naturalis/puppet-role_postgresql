@@ -2,17 +2,6 @@
 
 #### Table of Contents
 
-1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with role_postgresql](#setup)
-    * [What role_postgresql affects](#what-role_postgresql-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with role_postgresql](#beginning-with-role_postgresql)
-4. [Usage - Configuration options and additional functionality](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
-
 ## Overview
 
 Install and manage PostGreSQL using puppetlabs/postgresql module.
@@ -23,49 +12,44 @@ This is a wrapper module around puppetlabs/postgresql. It will install the datab
 
 ## Setup
 
-### What role_postgresql affects
-
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
+    puppet apply -e 'include role_postgresql'
 
 ### Beginning with role_postgresql
 
-The very basic steps needed for a user to get the module up and running.
+Test with Vagrant. See directory vagrant.
 
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+    vagrant up
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+Default are set in yaml format in init.pp. Override using Foreman or hiera. 
 
-## Reference
+## Test replication
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
+Run on secondary:
+
+    systemctl stop postgresql
+
+    pg_basebackup \
+      --write-recovery-conf \
+      --pgdata=/var/lib/postgresql/11/main \
+      --host=192.168.56.5 \
+      --username=replicator \
+      --port=5432 \
+      --progress \
+      --verbose
+
+    systemctl start postgresql
+    
+Check replication status on master:
+
+    select * from pg_stat_replication;
+
+Check replication status on slave:
+
+    select * from pg_stat_wal_receiver;
+    watch -n 2 "ps -aux | grep streaming"
 
 ## Limitations
 
-Tested with Ubuntu 16.04 and Puppet 5.
-
-## Development
-
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
-
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You may also add any additional sections you feel are
-necessary or important to include here. Please use the `## ` header.
+Tested with Ubuntu 18.04, Puppet 5, PostgreSQL 11.
