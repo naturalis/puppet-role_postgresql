@@ -16,7 +16,7 @@ This is a wrapper module around puppetlabs/postgresql. It will install the datab
 
 ### Beginning with role_postgresql
 
-Test with Vagrant. See directory vagrant.
+Test with Vagrant. Move to directory vagrant:
 
     vagrant up
     vagrant ssh primary
@@ -30,10 +30,10 @@ Default are set in yaml format in init.pp. Override using Foreman or hiera.
 
 Run on secondary:
 
-    # Stop PostgreSQL
+    # Stop PostgreSQL:
     sudo systemctl stop postgresql
     
-    # Move existing main directory
+    # Move existing main directory:
     sudo mv /var/lib/postgresql/11/main /var/lib/postgresql/11/main.1
 
     # Must run as postgres user:
@@ -46,7 +46,7 @@ Run on secondary:
       --progress \
       --verbose
 
-    # Start PostgreSQL
+    # Start PostgreSQL:
     sudo systemctl start postgresql
     
 Check replication status on primary (master):
