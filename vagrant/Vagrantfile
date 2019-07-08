@@ -1,0 +1,30 @@
+#18.04
+box = "bento/ubuntu-18.04"
+
+# Settings for all boxes:
+Vagrant.configure("2") do |config|
+  
+  config.vbguest.auto_update = false  
+    
+  config.vm.box = box
+  config.vm.provider "virtualbox" do |v|
+    v.gui = true
+    v.customize ["modifyvm", :id, "--ostype", "Ubuntu_64"]
+    v.customize ["modifyvm", :id, "--memory", "4096"]
+    v.customize ["modifyvm", :id, "--nic2", "hostonly", "--nictype2", "82540EM", "--cableconnected2", "on", "--hostonlyadapter2", "vboxnet0"]
+  end
+
+  config.vm.define "primary" do |config|
+    config.vm.host_name = "primary"
+    config.vm.network "private_network", ip: "192.168.56.5"
+    config.vm.provision "shell",
+      inline: "curl https://raw.githubusercontent.com/rudibroekhuizen/puppet-role_base/master/files/bootstrap.sh > bootstrap.sh; chmod +x bootstrap.sh;./bootstrap.sh server-psql-master"
+  end
+
+  config.vm.define "secondary" do |config|
+    config.vm.host_name = "secondary"
+    config.vm.network "private_network", ip: "192.168.56.6"
+    config.vm.provision "shell",
+      inline: "curl https://raw.githubusercontent.com/rudibroekhuizen/puppet-role_base/master/files/bootstrap.sh > bootstrap.sh; chmod +x bootstrap.sh;./bootstrap.sh server-psql-slave"
+  end
+end
