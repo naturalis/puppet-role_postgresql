@@ -92,7 +92,7 @@ hot_standby:
 archive_mode:
   value: 'on'
 archive_command:
-  value: 'cp %p /var/lib/postgresql/11/archive/%f'
+  value: 'test ! -f /tmp/%f && cp %p /tmp/%f'
 ...
   "
 ) {
