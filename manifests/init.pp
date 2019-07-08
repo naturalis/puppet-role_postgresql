@@ -108,7 +108,6 @@ hot_standby:
 
   # Install PostGreSQL:
   class { 'postgresql::server':
-    stage                => first,
     listen_addresses     => $listen_address,
     postgres_password    => $postgres_password,
     manage_recovery_conf => $manage_recovery_conf
