@@ -30,9 +30,14 @@ Default are set in yaml format in init.pp. Override using Foreman or hiera.
 
 Run on secondary:
 
-    systemctl stop postgresql
+    # Stop PostgreSQL
+    sudo systemctl stop postgresql
+    
+    # Move existing main directory
+    sudo mv /var/lib/postgresql/11/main /var/lib/postgresql/11/main.1
 
-    pg_basebackup \
+    # Must run as postgres user:
+    sudo -u postgres pg_basebackup \
       --write-recovery-conf \
       --pgdata=/var/lib/postgresql/11/main \
       --host=192.168.56.5 \
@@ -41,7 +46,8 @@ Run on secondary:
       --progress \
       --verbose
 
-    systemctl start postgresql
+    # Start PostgreSQL
+    sudo systemctl start postgresql
     
 Check replication status on primary (master):
 
