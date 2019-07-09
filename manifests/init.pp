@@ -54,13 +54,6 @@ replicator:
   auth_method: 'md5'
 ...
   ",
-  $recovery = "
----
-hash:
-  standby_mode: on
-  primary_conninfo: 'host=192.168.56.5 port=5432 user=replicator password=password'
-...
-  ",
   $config_entry = "
 ---
 logging_collector:
