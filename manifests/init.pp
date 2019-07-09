@@ -132,11 +132,6 @@ archive_command:
   # Config options
   create_resources(postgresql::server::config_entry, parseyaml($config_entry,$config_entry))
 
-  # Create recovery.conf
-  if $manage_recovery_conf {
-    create_resources(postgresql::server::recovery, parseyaml($recovery,$recovery))
-  }
-
   # Analytics
   if $analytics {
     class { 'role_postgresql::analytics': }
