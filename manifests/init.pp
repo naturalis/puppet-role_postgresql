@@ -58,7 +58,7 @@ replicator:
 ---
 hash:
   standby_mode: on
-  primary_conninfo: 'host=192.168.56.5 port=5432'
+  primary_conninfo: 'host=192.168.56.5 port=5432 user=replicator password=password'
 ...
   ",
   $config_entry = "
