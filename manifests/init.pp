@@ -6,7 +6,6 @@ class role_postgresql (
   $listen_address        = '*',
   $analytics             = false,
   $cron_job_hash         = undef,
-  $manage_recovery_conf  = false,
   $db = "
 ---
 db1:
