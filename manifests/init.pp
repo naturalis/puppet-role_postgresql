@@ -130,7 +130,7 @@ archive_command:
   }
 
   # Config options
-  if $config_entry
+  if $config_entry {
     create_resources(postgresql::server::config_entry, parseyaml($config_entry,$config_entry))
   }
 
