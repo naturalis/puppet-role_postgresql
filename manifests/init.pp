@@ -110,19 +110,29 @@ archive_command:
   }
 
   # Create databases
-  create_resources(postgresql::server::db, parseyaml($db,$db))
+  if $db {
+    create_resources(postgresql::server::db, parseyaml($db,$db))
+  }
 
   # Create roles
-  create_resources(postgresql::server::role, parseyaml($role,$role))
-
+  if $role {
+    create_resources(postgresql::server::role, parseyaml($role,$role))
+  }
+  
   # Create grants
-  create_resources(postgresql::server::database_grant, parseyaml($database_grant,$database_grant))
+  if $database_grant {
+    create_resources(postgresql::server::database_grant, parseyaml($database_grant,$database_grant))
+  }
 
   # Remote connections
-  create_resources(postgresql::server::pg_hba_rule, parseyaml($pg_hba_rule,$pg_hba_rule))
+  if $pg_hba_rule {
+    create_resources(postgresql::server::pg_hba_rule, parseyaml($pg_hba_rule,$pg_hba_rule))
+  }
 
   # Config options
-  create_resources(postgresql::server::config_entry, parseyaml($config_entry,$config_entry))
+  if $config_entry
+    create_resources(postgresql::server::config_entry, parseyaml($config_entry,$config_entry))
+  }
 
   # Analytics
   if $analytics {
