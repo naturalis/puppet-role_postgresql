@@ -67,8 +67,6 @@ log_truncate_on_rotation:
   value: 'on'
 log_rotation_age:
   value: '1d'
-log_rotation_age:
-  value: '1d'
 log_rotation_size:
   value: '0'
 log_directory:
