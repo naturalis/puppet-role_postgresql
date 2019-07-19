@@ -51,12 +51,23 @@ Run on secondary:
     
 Check replication status on primary (master):
 
+    vagrant ssh primary
+    sudo -s
+    su postgres
+    psql
     select * from pg_stat_replication;
 
 Check replication status on secondary (slave):
 
-    select * from pg_stat_wal_receiver;
+    vagrant ssh secondary
+    sudo -s
+        
     watch -n 2 "ps -aux | grep streaming"
+    
+    su postgres
+    psql
+    select * from pg_stat_wal_receiver;
+    
 
 ## Limitations
 
