@@ -68,6 +68,9 @@ Check replication status on secondary (slave):
     psql
     select * from pg_stat_wal_receiver;
     
+To promote slave to master:
+
+    pg_ctlcluster 11 main promote
 
 ## Limitations
 
