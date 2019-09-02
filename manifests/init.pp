@@ -6,6 +6,11 @@ class role_postgresql (
   $listen_address        = '*',
   $analytics             = false,
   $cron_job_hash         = undef,
+  $queries               = "
+---
+SELECT * FROM pg_catalog.pg_tables;
+...
+  ",
   $db = "
 ---
 db1:
