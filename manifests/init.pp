@@ -135,5 +135,10 @@ archive_command:
   if $analytics {
     class { 'role_postgresql::analytics': }
   }
-   
+  
+  # Queries 
+  file { '/opt/queries.sql':
+    content => "$queries",
+  }
+
 }
